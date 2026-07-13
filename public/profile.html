@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Settings — FlyRank AI</title>
+    <link rel="stylesheet" href="/css/profile.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <div class="brand">
+          <span class="brand-mark">FR</span>
+          <div>
+            <p class="brand-name">FlyRank AI</p>
+            <p class="brand-subtitle">Account settings</p>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="card">
+          <div class="card-header">
+            <h1>Profile settings</h1>
+            <p>Update your personal information and notification preferences.</p>
+          </div>
+
+          <div id="form-alert" class="alert" hidden role="alert"></div>
+
+          <form id="profile-form" novalidate>
+            <fieldset class="form-section">
+              <legend>Personal information</legend>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="fullName">Full name <span class="required">*</span></label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    autocomplete="name"
+                    required
+                    minlength="2"
+                    maxlength="100"
+                    placeholder="Jane Doe"
+                  />
+                  <p class="field-error" id="error-fullName" aria-live="polite"></p>
+                </div>
+
+                <div class="field">
+                  <label for="email">Email <span class="required">*</span></label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    autocomplete="email"
+                    required
+                    maxlength="255"
+                    placeholder="jane@example.com"
+                  />
+                  <p class="field-error" id="error-email" aria-live="polite"></p>
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="phone">Phone</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    autocomplete="tel"
+                    placeholder="+1 (555) 123-4567"
+                  />
+                  <p class="field-error" id="error-phone" aria-live="polite"></p>
+                </div>
+
+                <div class="field">
+                  <label for="timezone">Timezone <span class="required">*</span></label>
+                  <select id="timezone" name="timezone" required>
+                    <option value="">Select a timezone</option>
+                    <option value="America/New_York">Eastern Time (ET)</option>
+                    <option value="America/Chicago">Central Time (CT)</option>
+                    <option value="America/Denver">Mountain Time (MT)</option>
+                    <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                    <option value="Europe/London">London (GMT/BST)</option>
+                    <option value="Europe/Paris">Central European Time</option>
+                    <option value="Asia/Kolkata">India Standard Time</option>
+                    <option value="Asia/Tokyo">Japan Standard Time</option>
+                    <option value="Australia/Sydney">Australian Eastern Time</option>
+                    <option value="UTC">UTC</option>
+                  </select>
+                  <p class="field-error" id="error-timezone" aria-live="polite"></p>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <legend>Professional details</legend>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="company">Company</label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    autocomplete="organization"
+                    maxlength="100"
+                    placeholder="FlyRank AI"
+                  />
+                  <p class="field-error" id="error-company" aria-live="polite"></p>
+                </div>
+
+                <div class="field">
+                  <label for="jobTitle">Job title</label>
+                  <input
+                    type="text"
+                    id="jobTitle"
+                    name="jobTitle"
+                    autocomplete="organization-title"
+                    maxlength="100"
+                    placeholder="Content Strategist"
+                  />
+                  <p class="field-error" id="error-jobTitle" aria-live="polite"></p>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="website">Website</label>
+                <input
+                  type="url"
+                  id="website"
+                  name="website"
+                  autocomplete="url"
+                  maxlength="500"
+                  placeholder="https://example.com"
+                />
+                <p class="field-error" id="error-website" aria-live="polite"></p>
+              </div>
+
+              <div class="field">
+                <label for="bio">Bio</label>
+                <textarea
+                  id="bio"
+                  name="bio"
+                  rows="4"
+                  maxlength="500"
+                  placeholder="Tell us a bit about yourself..."
+                ></textarea>
+                <div class="field-meta">
+                  <p class="field-error" id="error-bio" aria-live="polite"></p>
+                  <span id="bio-count" class="char-count">0 / 500</span>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <legend>Notifications</legend>
+
+              <div class="checkbox-field">
+                <input type="checkbox" id="emailNotifications" name="emailNotifications" />
+                <label for="emailNotifications">
+                  Email me about account activity and product updates
+                </label>
+              </div>
+
+              <div class="checkbox-field">
+                <input type="checkbox" id="weeklyDigest" name="weeklyDigest" />
+                <label for="weeklyDigest">
+                  Send a weekly digest of visibility and content insights
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+              <button type="submit" class="btn btn-primary" id="submit-btn">
+                Save changes
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="/js/profileForm.js" type="module"></script>
+  </body>
+</html>
