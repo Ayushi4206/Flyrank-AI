@@ -1,16 +1,106 @@
-# React + Vite
+# CineScope – React App Development with AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+CineScope is a React-based movie discovery application built as part of my Frontend Development Internship at FlyRank AI.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The application allows users to browse popular movies, search for movies by title, and view detailed information about selected movies.
 
-## React Compiler
+Movie data is fetched from the TMDB API. The project was developed with AI assistance and then manually reviewed, tested, debugged, and refactored.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Assignment Requirements
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The assignment was to build a React application independently using AI as a development assistant.
+
+The submission required:
+
+- A completed application
+- The prompts used during development
+- A short explanation of how AI assisted throughout the implementation
+- Examples of manual improvements, corrections, or refactoring performed after reviewing AI-generated code
+
+---
+
+## Features
+
+### Browse Popular Movies
+
+When the application loads, it fetches and displays popular movies from the TMDB API.
+
+### Search Movies
+
+Users can search for movies by entering a movie title.
+
+### Movie Details
+
+Users can select a movie to view additional details.
+
+### Loading States
+
+The application provides feedback while movie data or movie details are being loaded.
+
+### Error Handling
+
+API errors are caught and displayed to the user instead of allowing the application to fail silently.
+
+### Empty States
+
+When a search does not return any results, the application displays an appropriate message.
+
+### Browser Navigation
+
+The application uses the browser History API to manage navigation between the movie list and selected movie details.
+
+---
+
+## Tech Stack
+
+- React
+- Vite
+- JavaScript
+- CSS
+- TMDB API
+- Git
+- GitHub
+- Vercel
+- AI development assistance
+
+---
+
+## Project Structure
+
+```text
+03-react-app-with-ai/
+│
+├── public/
+│
+├── src/
+│   ├── api/
+│   │   └── tmdbService.js
+│   │
+│   ├── assets/
+│   │
+│   ├── components/
+│   │   ├── Header.jsx
+│   │   ├── SearchBar.jsx
+│   │   ├── MovieGrid.jsx
+│   │   ├── MovieDetails.jsx
+│   │   └── StatusMessage.jsx
+│   │
+│   ├── utils/
+│   │
+│   ├── App.css
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+│
+├── .env
+├── .env.example
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
