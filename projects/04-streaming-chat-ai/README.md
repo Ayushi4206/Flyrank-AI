@@ -1,16 +1,86 @@
-# React + Vite
+# DevBrief AI — Streaming Chat Interface
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based AI chat interface designed to turn vague product ideas and technical problems into structured, actionable implementation plans.
 
-Currently, two official plugins are available:
+Built as part of the **FlyRank AI Frontend Track**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+DevBrief AI is designed around a specific workflow:
 
-## Expanding the ESLint configuration
+> **Messy idea → Problem breakdown → Technical decisions → Actionable next steps**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Instead of creating a generic “Ask me anything” chatbot, this project focuses on helping users structure product ideas, features, and technical problems.
+
+The interface supports progressive response rendering, conversation state, generation controls, and smart scrolling behavior.
+
+---
+
+## Features
+
+- Progressive streaming-style response rendering
+- Thinking indicator before response generation
+- Stop generation while preserving partial output
+- Multi-turn conversation state
+- Smart auto-scroll behavior
+- Jump-to-latest control
+- Responsive interface
+- Reusable React component architecture
+- Backend structure prepared for server-side Claude API integration
+
+---
+
+## Tech Stack
+
+### Frontend
+
+- React
+- Vite
+- JavaScript
+- CSS
+
+### Backend
+
+- Node.js
+- Express
+- CORS
+- dotenv
+- Anthropic SDK
+
+---
+
+## Project Structure
+
+```text
+04-streaming-chat-ai/
+│
+├── public/
+│   ├── favicon.svg
+│   └── icons.svg
+│
+├── server/
+│   └── index.js
+│
+├── src/
+│   ├── assets/
+│   │   └── hero.png
+│   │
+│   ├── components/
+│   │   ├── ChatInput.jsx
+│   │   ├── ChatMessage.jsx
+│   │   ├── JumpToLatest.jsx
+│   │   └── ThinkingIndicator.jsx
+│   │
+│   ├── hooks/
+│   │   └── useSmartScroll.js
+│   │
+│   ├── App.css
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+│
+├── .gitignore
+├── package.json
+└── vite.config.js
