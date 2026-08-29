@@ -1,121 +1,141 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { useEffect, useState } from 'react'
+import Header from './components/Header'
+import SearchBar from './components/SearchBar'
+import MovieGrid from './components/MovieGrid'
+import MovieDetails from './components/MovieDetails'
+import StatusMessage from './components/StatusMessage'
+import { fetchMovieDetails, fetchPopularMovies, searchMovies } from './api/tmdbService'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [query, setQuery] = useState('')
+  const [movies, setMovies] = useState([])
+  const [selectedMovieId, setSelectedMovieId] = useState(null)
+  const [movieDetails, setMovieDetails] = useState(null)
+  const [status, setStatus] = useState('loading')
+  const [detailStatus, setDetailStatus] = useState('idle')
+  const [error, setError] = useState('')
+  const [detailError, setDetailError] = useState('')
+
+  useEffect(() => {
+    async function loadPopularMovies() {
+      setStatus('loading')
+      setError('')
+
+      try {
+        const popularMovies = await fetchPopularMovies()
+        setMovies(popularMovies)
+        setStatus(popularMovies.length === 0 ? 'empty' : 'idle')
+      } catch (fetchError) {
+        setError(fetchError.message)
+        setStatus('error')
+      }
+    }
+
+    loadPopularMovies()
+  }, [])
+
+  useEffect(() => {
+    window.history.replaceState({ selectedMovieId: null }, '')
+
+    function handlePopState(event) {
+      setSelectedMovieId(event.state?.selectedMovieId ?? null)
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  useEffect(() => {
+    if (!selectedMovieId) {
+      setMovieDetails(null)
+      setDetailError('')
+      setDetailStatus('idle')
+      return
+    }
+
+    async function loadMovieDetails() {
+      setDetailStatus('loading')
+      setDetailError('')
+      setMovieDetails(null)
+
+      try {
+        const details = await fetchMovieDetails(selectedMovieId)
+        setMovieDetails(details)
+        setDetailStatus('idle')
+      } catch (fetchError) {
+        setDetailError(fetchError.message)
+        setDetailStatus('error')
+      }
+    }
+
+    loadMovieDetails()
+  }, [selectedMovieId])
+
+  async function handleSearch(nextQuery) {
+    setQuery(nextQuery)
+    setSelectedMovieId(null)
+
+    if (!nextQuery) {
+      setStatus('loading')
+      setError('')
+
+      try {
+        const popularMovies = await fetchPopularMovies()
+        setMovies(popularMovies)
+        setStatus(popularMovies.length === 0 ? 'empty' : 'idle')
+      } catch (fetchError) {
+        setError(fetchError.message)
+        setStatus('error')
+      }
+
+      return
+    }
+
+    setStatus('loading')
+    setError('')
+
+    try {
+      const searchResults = await searchMovies(nextQuery)
+      setMovies(searchResults)
+      setStatus(searchResults.length === 0 ? 'empty' : 'idle')
+    } catch (fetchError) {
+      setError(fetchError.message)
+      setStatus('error')
+    }
+  }
+
+  function handleSelect(movie) {
+    window.history.pushState({ selectedMovieId: movie?.id ?? null }, '')
+    setMovieDetails(null)
+    setDetailError('')
+    setDetailStatus('loading')
+    setSelectedMovieId(movie?.id || null)
+  }
+
+  function handleCloseDetails() {
+    window.history.back()
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <div className="app-shell">
+      <Header />
+      <main>
+        <SearchBar query={query} onSearch={handleSearch} />
+        <StatusMessage
+          status={status}
+          error={error}
+          emptyMessage={query ? 'No movies found for that search.' : 'No movies available yet.'}
+        />
+        <MovieDetails
+          movie={movieDetails}
+          onClose={handleCloseDetails}
+          status={detailStatus}
+          error={detailError}
+        />
+        <MovieGrid movies={movies} onSelect={handleSelect} />
+      </main>
+    </div>
   )
 }
 
