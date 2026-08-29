@@ -10,16 +10,22 @@ Movie data is fetched from the TMDB API. The project was developed with AI assis
 
 ---
 
+## Live Demo
+
+🚀 **Live Application:** [View CineScope on Vercel](https://movie-explorer-ebon-gamma.vercel.app/)
+
+---
+
 ## Assignment Requirements
 
 The assignment was to build a React application independently using AI as a development assistant.
 
-The submission required:
+The submission includes:
 
-- A completed application
-- The prompts used during development
-- A short explanation of how AI assisted throughout the implementation
-- Examples of manual improvements, corrections, or refactoring performed after reviewing AI-generated code
+- A completed React application
+- Prompts used during development
+- An explanation of how AI assisted during implementation
+- Examples of manual improvements, corrections, and refactoring
 
 ---
 
@@ -35,11 +41,11 @@ Users can search for movies by entering a movie title.
 
 ### Movie Details
 
-Users can select a movie to view additional details.
+Users can select a movie to view additional information.
 
 ### Loading States
 
-The application provides feedback while movie data or movie details are being loaded.
+The application provides feedback while movie data or movie details are loading.
 
 ### Error Handling
 
@@ -65,7 +71,7 @@ The application uses the browser History API to manage navigation between the mo
 - Git
 - GitHub
 - Vercel
-- AI development assistance
+- AI-assisted development
 
 ---
 
@@ -86,6 +92,7 @@ The application uses the browser History API to manage navigation between the mo
 │   │   ├── Header.jsx
 │   │   ├── SearchBar.jsx
 │   │   ├── MovieGrid.jsx
+│   │   ├── MovieCard.jsx
 │   │   ├── MovieDetails.jsx
 │   │   └── StatusMessage.jsx
 │   │
