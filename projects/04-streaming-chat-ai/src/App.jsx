@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 
 import ChatMessage from "./components/ChatMessage";
 import ChatInput from "./components/ChatInput";
@@ -10,186 +10,212 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [isThinking, setIsThinking] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  const streamTimeoutRef = useRef(null);
 
-const {
-  containerRef,
-  isAtBottom,
-  scrollToLatest,
-} = useSmartScroll([messages, isThinking]);
-  const generateResponse = (userMessage) => {
-    return `Here is how I would break this down.
+  const abortControllerRef = useRef(null);
 
-The first thing to define is the actual problem you are solving. Your idea should not start with features or technology. Start with who has the problem and why the current approach is not good enough.
+  const { containerRef, isAtBottom, scrollToLatest } =
+    useSmartScroll([messages, isThinking, isStreaming]);
 
-From there, I would identify the smallest useful version of the product, decide what needs to happen on the frontend, and separate the essential functionality from features that can wait.
+  const handleSend = async (userInput) => {
+    if (!userInput.trim() || isStreaming || isThinking) return;
 
-The main risk is building too much before validating the core workflow. I would start with one clear user journey and make that work properly before adding complexity.`;
-  };
-
-  const handleSend = (userMessage) => {
-    if (isStreaming || isThinking) return;
-
-    const userMessageObject = {
-      id: Date.now(),
+    const userMessage = {
+      id: crypto.randomUUID(),
       role: "user",
-      content: userMessage,
+      content: userInput.trim(),
     };
 
-    setMessages((currentMessages) => [
-      ...currentMessages,
-      userMessageObject,
-    ]);
+    const assistantMessage = {
+      id: crypto.randomUUID(),
+      role: "assistant",
+      content: "",
+    };
 
+    const updatedMessages = [
+      ...messages,
+      userMessage,
+      assistantMessage,
+    ];
+
+    setMessages(updatedMessages);
     setIsThinking(true);
 
-    setTimeout(() => {
-      const assistantMessage = {
-        id: Date.now() + 1,
-        role: "assistant",
-        content: "",
-      };
+    abortControllerRef.current = new AbortController();
 
-      setMessages((currentMessages) => [
-        ...currentMessages,
-        assistantMessage,
-      ]);
+    try {
+      const conversationHistory = updatedMessages
+        .filter(
+          (message) =>
+            message.role === "user" ||
+            (message.role === "assistant" && message.content)
+        )
+        .map((message) => ({
+          role: message.role,
+          content: message.content,
+        }));
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: conversationHistory,
+        }),
+        signal: abortControllerRef.current.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get AI response");
+      }
+
+      if (!response.body) {
+        throw new Error("Streaming is not supported");
+      }
 
       setIsThinking(false);
       setIsStreaming(true);
 
-      const fullResponse = generateResponse(userMessage);
-      let currentIndex = 0;
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
 
-      const streamNextWord = () => {
-        if (currentIndex >= fullResponse.length) {
-          setIsStreaming(false);
-          streamTimeoutRef.current = null;
-          return;
-        }
+      while (true) {
+        const { done, value } = await reader.read();
 
-        const nextChunk = fullResponse.slice(
-          currentIndex,
-          currentIndex + 3
-        );
+        if (done) break;
+
+        const chunk = decoder.decode(value, {
+          stream: true,
+        });
 
         setMessages((currentMessages) =>
           currentMessages.map((message) =>
             message.id === assistantMessage.id
               ? {
                   ...message,
-                  content: message.content + nextChunk,
+                  content: message.content + chunk,
                 }
               : message
           )
         );
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        console.error(error);
 
-        currentIndex += 3;
-
-        streamTimeoutRef.current = setTimeout(
-          streamNextWord,
-          25
+        setMessages((currentMessages) =>
+          currentMessages.map((message) =>
+            message.id === assistantMessage.id
+              ? {
+                  ...message,
+                  content:
+                    message.content ||
+                    "Something went wrong while generating the response.",
+                }
+              : message
+          )
         );
-      };
-
-      streamNextWord();
-    }, 700);
+      }
+    } finally {
+      setIsThinking(false);
+      setIsStreaming(false);
+      abortControllerRef.current = null;
+    }
   };
 
   const handleStop = () => {
-    if (streamTimeoutRef.current) {
-      clearTimeout(streamTimeoutRef.current);
-      streamTimeoutRef.current = null;
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
-
-    setIsThinking(false);
-    setIsStreaming(false);
   };
 
   return (
     <main className="app">
       <header className="app-header">
         <div>
-          <p className="eyebrow">AI WORKSPACE</p>
+          <p className="eyebrow">AI PRODUCT THINKING</p>
           <h1>DevBrief</h1>
         </div>
 
         <div className="status">
-          <span className="status-dot"></span>
-          Streaming ready
+          <span className="status-dot" />
+          Streaming Ready
         </div>
       </header>
 
       <section
-  className="chat-container"
-  ref={containerRef}
+        className="chat-container"
+        ref={containerRef}
       >
-        {messages.length === 0 && !isThinking && (
-          <div className="empty-state">
-            <p className="eyebrow">FROM IDEA TO EXECUTION</p>
-
-            <h2>
-              Start with the messy version.
-              <br />
-              We'll find the structure.
-            </h2>
-
-            <p>
-              Describe a product idea, feature, or technical
-              problem. DevBrief will help break it into
-              decisions you can actually act on.
-            </p>
-
-            <div className="suggestion-grid">
-              <button
-                onClick={() =>
-                  handleSend(
-                    "I want to build a platform for students to find hackathon teammates."
-                  )
-                }
-              >
-                I have a product idea but no clear feature list
-              </button>
-
-              <button
-                onClick={() =>
-                  handleSend(
-                    "I am stuck deciding how to structure my React project."
-                  )
-                }
-              >
-                Help me make a technical decision
-              </button>
-            </div>
-          </div>
-        )}
-
         <div className="messages">
-          {messages.map((message, index) => (
-            <ChatMessage
-              key={message.id}
-              role={message.role}
-              content={message.content}
-              isStreaming={
-                isStreaming &&
-                message.role === "assistant" &&
-                index === messages.length - 1
-              }
-            />
-          ))}
+          {messages.length === 0 ? (
+            <div className="empty-state">
+              <p className="eyebrow">START A CONVERSATION</p>
 
-          {isThinking && <ThinkingIndicator />}
+              <h2>
+                Turn rough ideas into
+                <br />
+                clear decisions.
+              </h2>
+
+              <p>
+                Describe a product idea, feature, or technical
+                problem. DevBrief will help you break it down
+                into practical next steps.
+              </p>
+
+              <div className="suggestion-grid">
+                <button
+                  onClick={() =>
+                    handleSend(
+                      "I have a product idea but I am not sure what the MVP should include."
+                    )
+                  }
+                >
+                  Help me define an MVP for my product idea
+                </button>
+
+                <button
+                  onClick={() =>
+                    handleSend(
+                      "Help me break down a technical problem into clear implementation steps."
+                    )
+                  }
+                >
+                  Break down a technical problem
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              {messages.map((message) => (
+                <ChatMessage
+                  key={message.id}
+                  role={message.role}
+                  content={message.content}
+                  isStreaming={
+                    isStreaming &&
+                    message.role === "assistant" &&
+                    message ===
+                      messages[messages.length - 1]
+                  }
+                />
+              ))}
+
+              {isThinking && <ThinkingIndicator />}
+            </>
+          )}
         </div>
       </section>
 
       {!isAtBottom && messages.length > 0 && (
-  <JumpToLatest onClick={scrollToLatest} />
-)}
+        <JumpToLatest onClick={scrollToLatest} />
+      )}
 
       <ChatInput
         onSend={handleSend}
+        isStreaming={isStreaming || isThinking}
         onStop={handleStop}
-        isLoading={isThinking || isStreaming}
       />
     </main>
   );
