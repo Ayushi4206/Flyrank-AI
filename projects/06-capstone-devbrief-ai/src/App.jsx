@@ -27,7 +27,7 @@ function App() {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/api/audit",
+        "/api/audit",
         {
           method: "POST",
           headers: {
