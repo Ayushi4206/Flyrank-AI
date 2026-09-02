@@ -1,185 +1,182 @@
-DevBrief AI — AI-Powered Decision Audit
+# 🧠 DevBrief AI
 
-DevBrief AI is an AI-powered decision auditing application that helps users evaluate product ideas and technical decisions before committing to implementation.
+### Turn uncertainty into a decision you can defend.
 
-Instead of returning an unstructured wall of AI-generated text, DevBrief AI converts a user's problem into a structured decision audit containing:
+DevBrief AI is an AI-powered decision auditing application that analyzes **product ideas** and **technical decisions** before implementation.
 
-Decision readiness score
-Overall risk level
-Critical findings
-Biggest assumption
-Primary risk
-Recommended next move
-Practical next steps
+Instead of generating another wall of AI text, DevBrief transforms a user's problem into a structured decision audit with actionable insights, risks, assumptions, and next steps.
 
-The application combines a React frontend, server-side AI execution, Gemini integration, structured JSON generation, Zod validation, streaming lifecycle states, error handling, automated testing, and deployment.
+> **Main Capstone Project — Frontend Development Internship at FlyRank AI**
 
-This project is the main capstone project of my Frontend Development Internship at FlyRank AI.
+---
 
-Live Demo
+## 🚀 Live Demo
 
-Deployed Application:
-👉 PASTE YOUR VERCEL LINK HERE
+🔗 **[Open DevBrief AI](https://devbrief-3vsrf9xhf-ayushi-projects1.vercel.app)**
 
-Run the project locally:
+---
 
-npm install
-npm start
+## ✨ What It Does
 
-The application runs with:
+Users describe a decision they are trying to make and choose between two contexts:
 
-Frontend → http://localhost:5173
-Backend → http://localhost:3001
-What DevBrief AI Does
+### 📦 Product Problem
 
-Users can submit one of two decision types:
+Example:
 
-Product Problem
+> I want to build an AI-powered platform for students managing internship applications, but I am planning to build application tracking, resume feedback, job recommendations, interview preparation, networking, and reminders in the first version.
 
-For example:
+DevBrief analyzes the idea and identifies:
 
-I want to build an AI-powered platform that helps college students manage internship applications. I am planning to include application tracking, AI resume feedback, job recommendations, interview preparation, networking suggestions, and automated reminders in the first version. I have not yet validated which problem students struggle with most. What should I build first?
+- 🎯 Decision readiness
+- ⚠️ Implementation risk
+- 🔍 Weak assumptions
+- 📉 Missing evidence
+- 🚧 Scope problems
+- ➡️ Recommended next actions
 
-DevBrief AI analyzes the idea and identifies:
+### ⚙️ Technical Decision
 
-Scope problems
-Weak assumptions
-Missing evidence
-Implementation risks
-Recommended next actions
-Technical Decision
+Example:
 
-For example:
+> My React application currently stores all user data locally, but I expect to support multiple users, authentication, persistent history, and multiple devices.
 
-I am building a React application that currently stores all user chat data locally. I expect the application to eventually support multiple users, persistent chat history, authentication, and access from different devices. I am unsure whether I should continue using local state or introduce a backend database and API now.
+DevBrief evaluates the technical context and highlights:
 
-The system evaluates the technical context and returns structured guidance based on the constraints and trade-offs described.
+- Architecture concerns
+- Scalability issues
+- Technical trade-offs
+- Implementation risks
+- Recommended next steps
 
-Application Architecture
-User Input
-    │
-    ▼
-React Frontend
-    │
-    │ POST Request
-    ▼
-Server-Side API
-    │
-    ▼
-Zod Input Validation
-    │
-    ▼
-AI Decision Audit Tool
-    │
-    ▼
-Gemini AI
-    │
-    ▼
-Structured JSON Response
-    │
-    ▼
-Zod Output Validation
-    │
-    ▼
-Streaming Tool Lifecycle Events
-    │
-    ▼
-Generative UI Components
+---
 
-The core design principle is that AI-generated data should not simply be displayed as a paragraph or raw JSON.
+# 🖥️ How DevBrief Works
 
-Instead, structured output is mapped to dedicated UI components.
+```text
+User describes a decision
+          │
+          ▼
+   React Frontend
+          │
+          ▼
+   Server-Side API
+          │
+          ▼
+   Zod Input Validation
+          │
+          ▼
+   AI Decision Tool
+          │
+          ▼
+      Gemini AI
+          │
+          ▼
+ Structured JSON Response
+          │
+          ▼
+   Zod Output Validation
+          │
+          ▼
+ Streaming Lifecycle Events
+          │
+          ▼
+   Generative UI Components
+```
 
-Tool Lifecycle
+The core idea behind the project is simple:
 
-DevBrief AI represents the AI execution process through distinct lifecycle states.
+> **AI output should behave like application data, not like a paragraph generator.**
 
-1. Input Streaming
-input-streaming
+Each part of the AI response is transformed into a dedicated interface.
 
-The application indicates that the submitted decision context is being processed.
+---
 
-Example message:
+# 🧩 Generative UI
 
+DevBrief does not render the AI response as raw JSON or a large text block.
+
+Instead, structured output becomes different UI components.
+
+| AI Output | UI Representation |
+|---|---|
+| Decision Score | SVG circular visualization |
+| Risk Level | Decision signal |
+| Findings | Structured audit rows |
+| Biggest Assumption | Insight card |
+| Primary Risk | Dedicated risk section |
+| Recommended Next Move | Action-focused insight |
+| Tool Failure | Dedicated error interface |
+
+---
+
+# 🔄 AI Tool Lifecycle
+
+The application visually represents the execution process.
+
+```text
+INPUT STREAMING
+       ↓
+INPUT AVAILABLE
+       ↓
+OUTPUT AVAILABLE
+```
+
+If the AI tool fails:
+
+```text
+INPUT STREAMING
+       ↓
+INPUT AVAILABLE
+       ↓
+OUTPUT ERROR
+```
+
+### 1️⃣ Input Streaming
+
+The system is processing the submitted decision.
+
+```text
 DevBrief is reading the decision context...
-2. Input Available
-input-available
+```
 
-The validated structured input becomes available to the frontend.
+### 2️⃣ Input Available
 
-The UI displays:
+The validated input is displayed so the user can see exactly what the AI tool is analyzing.
 
-Decision type
-Submitted problem
-Input status
+### 3️⃣ Output Available
 
-This makes it clear what information the AI tool is analyzing.
+The completed audit is transformed into:
 
-3. Output Available
-output-available
+- Decision score
+- Risk level
+- Recommendation
+- Audit findings
+- Biggest assumption
+- Primary risk
+- Recommended next move
+- Practical next steps
 
-The completed AI analysis is received and transformed into dedicated UI components.
+### 4️⃣ Output Error
 
-The output includes:
+Failures are treated as an explicit application state.
 
-Decision score
-Overall risk
-Recommendation
-Audit findings
-Biggest assumption
-Primary risk
-Recommended next move
-Practical next steps
-4. Output Error
-output-error
+Instead of crashing the UI, DevBrief displays:
 
-If the AI tool fails, the application does not crash or expose raw implementation details.
+- Error status
+- Error message
+- Failed request
+- Retry action
 
-Instead, DevBrief AI renders a dedicated error interface containing:
+---
 
-Error status
-Error message
-Failed request
-Retry functionality
-Tool Contract
+# 🧠 Structured AI Response
 
-The main server-side decision tool is located at:
+The server requests structured JSON from Gemini and validates the result before it reaches the frontend.
 
-server/tools/auditDecision.js
+Example:
 
-The tool validates incoming requests before processing them.
-
-Input
-{
-  problem: string,
-  type: "product" | "technical"
-}
-Input Validation
-
-The application uses Zod to validate the submitted decision.
-
-export const auditDecisionSchema = z.object({
-  problem: z
-    .string()
-    .min(
-      10,
-      "Please provide a more detailed problem description."
-    ),
-
-  type: z.enum([
-    "product",
-    "technical",
-  ]),
-});
-
-This prevents invalid or incomplete input from reaching the AI tool.
-
-Structured AI Response
-
-The AI is instructed to return structured JSON rather than unstructured text.
-
-The response contains:
-
+```js
 {
   score: 78,
 
@@ -189,17 +186,17 @@ The response contains:
     "Validate the core user problem before expanding the feature set.",
 
   biggestAssumption:
-    "The assumption that multiple features will provide more value before validating which problem matters most.",
+    "Multiple features will provide more value before validating what users actually need.",
 
   primaryRisk:
-    "Building a large feature set before confirming actual user demand.",
+    "Building a large feature set before confirming real user demand.",
 
   recommendedNextMove:
-    "Identify the single most painful problem students face during internship applications.",
+    "Identify the single most painful problem users currently face.",
 
   findings: [
     {
-      title: "Scope problem",
+      title: "Scope Problem",
       description:
         "The first version attempts to solve several different problems simultaneously."
     }
@@ -211,392 +208,215 @@ The response contains:
     "Build the smallest version capable of testing the assumption."
   ]
 }
+```
 
-The response is validated again using Zod before being returned to the frontend.
+The response passes through two validation layers:
 
-This creates two validation layers:
-
+```text
 User Input
     ↓
 Zod Validation
     ↓
-AI Tool
+AI Decision Tool
     ↓
 Structured AI Output
     ↓
 Zod Validation
     ↓
-Frontend UI
-Generative UI Components
+Generative UI
+```
 
-The application does not display the AI response as a single text block.
+---
 
-Each part of the structured response is rendered using dedicated React components.
+# 🛠️ Tech Stack
 
-ToolLifecycle.jsx
+### Frontend
 
-Displays the current lifecycle state of the AI tool.
+- React
+- Vite
+- CSS
 
-Supported states:
+### Backend
 
-input-streaming
-input-available
-output-available
-output-error
-AuditInput.jsx
+- Node.js
+- Express
 
-Displays the validated input received by the server.
+### AI
 
-It shows:
+- Google Gemini
+- Structured JSON generation
 
-Decision category
-Submitted problem
-Input status
-DecisionScore.jsx
+### Validation
 
-Displays the decision readiness score using an SVG circular progress indicator.
+- Zod
 
-It also presents:
+### Testing
 
-Overall risk level
-Main recommendation
-Analysis focus
+- Vitest
+- React Testing Library
 
-Example:
+### Deployment
 
-78 / 100
-High Implementation Risk
-FindingsTable.jsx
+- Vercel
+- Serverless API Functions
 
-Transforms structured findings into a readable audit interface.
+---
 
-It displays:
+# 🧪 Testing
 
-Individual findings
-Biggest assumption
-Recommended next move
-Primary risk
-ToolError.jsx
+The project includes automated tests for UI components and the AI decision tool.
 
-Handles failed AI execution.
+| Component / Feature | Tests |
+|---|---:|
+| AuditInput | 3 |
+| DecisionScore | 4 |
+| FindingsTable | 5 |
+| ToolError | 3 |
+| auditDecision Tool | 4 |
+| **Total** | **19** |
 
-Instead of crashing the application, it displays a structured failure state with a retry action.
+Run the complete test suite:
 
-Error Handling
-
-The project includes deliberate error testing.
-
-Submitting a problem containing:
-
-fail audit
-
-triggers a controlled failure in the server-side tool.
-
-This allows the application to demonstrate the complete failure lifecycle:
-
-User Request
-    ↓
-Tool Execution
-    ↓
-Controlled Failure
-    ↓
-output-error Event
-    ↓
-ToolError Component
-    ↓
-Retry Analysis
-
-The retry action allows the user to submit the request again without manually rebuilding the application state.
-
-API
-
-For deployment, the project includes a serverless API endpoint:
-
-api/audit.js
-
-The endpoint:
-
-Receives the user's decision.
-Validates the request with Zod.
-Sends lifecycle events to the frontend.
-Executes the AI decision audit.
-Streams the structured result.
-Handles AI or validation failures.
-
-The frontend processes the streamed events and updates the UI according to the current lifecycle state.
-
-Streaming Flow
-
-The backend sends events representing the tool lifecycle.
-
-Example:
-
-input-streaming
-        ↓
-input-available
-        ↓
-output-available
-
-If execution fails:
-
-input-streaming
-        ↓
-input-available
-        ↓
-output-error
-
-The frontend reads the response stream and updates the application state dynamically.
-
-Testing
-
-The project includes automated tests using Vitest.
-
-The following components and functionality are covered:
-
-Component / Feature	Tests
-AuditInput	3
-DecisionScore	4
-FindingsTable	5
-ToolError	3
-auditDecision tool	4
-Total	19
-
-Run all tests:
-
+```bash
 npm run test:run
+```
 
-Example result:
+Expected result:
 
+```text
 Test Files  5 passed
-Tests       19 passed
-Code Quality
+Tests      19 passed
+```
 
-The project uses ESLint for static code analysis.
+---
 
-Run:
+# 🧹 Code Quality
 
+Run ESLint:
+
+```bash
 npm run lint
+```
 
-The project was verified with:
+Create a production build:
 
+```bash
+npm run build
+```
+
+Full verification:
+
+```bash
 npm run lint
 npm run test:run
 npm run build
+```
 
-The production build is generated using:
+---
 
-npm run build
-Project Structure
-06-capstone-devbrief-ai/
-│
-├── api/
-│   └── audit.js
-│
-├── server/
-│   ├── index.js
-│   │
-│   └── tools/
-│       ├── auditDecision.js
-│       └── auditDecision.test.js
-│
-├── src/
-│   ├── assets/
-│   │
-│   ├── components/
-│   │   ├── AuditInput.jsx
-│   │   ├── AuditInput.test.jsx
-│   │   ├── DecisionScore.jsx
-│   │   ├── DecisionScore.test.jsx
-│   │   ├── FindingsTable.jsx
-│   │   ├── FindingsTable.test.jsx
-│   │   ├── ToolError.jsx
-│   │   ├── ToolError.test.jsx
-│   │   └── ToolLifecycle.jsx
-│   │
-│   ├── test/
-│   │   └── setup.js
-│   │
-│   ├── App.jsx
-│   ├── App.css
-│   ├── index.css
-│   └── main.jsx
-│
-├── public/
-│
-├── .gitignore
-├── eslint.config.js
-├── index.html
-├── package.json
-├── package-lock.json
-├── vite.config.js
-└── README.md
-Tech Stack
-Frontend
-React
-Vite
-CSS
-Backend
-Node.js
-Express
-AI
-Google Gemini
-Structured JSON generation
-Validation
-Zod
-Testing
-Vitest
-React Testing Library
-Deployment
-Vercel
-Serverless API functions
-Installation
+# ⚠️ Error Handling
 
-Clone the repository:
+DevBrief includes a deliberate failure path to test the application's error lifecycle.
 
-git clone YOUR_REPOSITORY_URL
+Using:
 
-Navigate to the project:
+```text
+fail audit
+```
 
-cd projects/06-capstone-devbrief-ai
+causes the server-side tool to trigger a controlled failure.
 
-Install dependencies:
+The application then follows:
 
-npm install
-
-Create a .env file:
-
-GEMINI_API_KEY=your_api_key_here
-
-Start the complete local application:
-
-npm start
-Available Scripts
-Command	Purpose
-npm start	Runs the frontend and backend together
-npm run dev	Starts the Vite development server
-npm run server	Starts the Express server
-npm run test:run	Runs the automated test suite
-npm run lint	Runs ESLint
-npm run build	Creates a production build
-npm run preview	Previews the production build locally
-Testing the Application
-Product Decision
-
-Select:
-
-Product problem
-
-Try:
-
-I want to build an AI-powered platform that helps college students manage internship applications. My plan is to include application tracking, AI resume feedback, job recommendations, interview preparation, networking suggestions, and automated reminders in the first version. I have not yet validated which problem students struggle with most. What should I build first?
-
-The expected output should analyze:
-
-Feature scope
-Assumptions
-User validation gaps
-Implementation risk
-Recommended next action
-Technical Decision
-
-Select:
-
-Technical decision
-
-Try:
-
-I am building a React application that currently stores all user chat data locally. I expect the application to eventually support multiple users, persistent chat history, authentication, and access from different devices. I am unsure whether I should continue using local state or introduce a backend database and API now.
-
-The expected output should focus on:
-
-Architecture
-Scalability
-Trade-offs
-Technical risks
-Recommended next steps
-Error State
-
-Click:
-
-Test error handling
-
-The application submits a controlled failure request.
-
-Expected lifecycle:
-
-input-streaming
-        ↓
-input-available
-        ↓
+```text
+User Request
+      ↓
+Tool Execution
+      ↓
+Controlled Failure
+      ↓
 output-error
+      ↓
+ToolError Component
+      ↓
+Retry Analysis
+```
 
-The dedicated error interface should appear with a retry option.
+This demonstrates that AI failures are handled as part of the application's UX instead of being ignored or causing a crash.
 
-Key Design Decisions
-Structured Output Instead of Raw AI Text
+---
 
-The AI returns structured data that is validated before rendering.
+# 🎯 Key Engineering Decisions
 
-This allows different parts of the response to be represented appropriately:
+### Structured Output Over Raw AI Text
 
-Score
-  → Visual indicator
+The AI response is treated as structured application data.
 
-Findings
-  → Structured rows
+```text
+Score → Visualization
 
-Assumption
-  → Insight card
+Findings → Structured UI
 
-Primary risk
-  → Dedicated risk section
+Assumption → Insight Card
 
-Next move
-  → Action-focused recommendation
-Server-Side AI Execution
+Risk → Dedicated Section
 
-The Gemini API key remains on the server side.
+Next Move → Action Recommendation
+```
 
-The frontend does not directly expose the AI service credentials.
+### Server-Side AI Execution
 
-Validation Before and After AI Execution
+The Gemini API key remains on the server side and is not exposed directly to the frontend.
 
-The application validates:
+### Validation Before and After AI Execution
 
-Incoming user input.
-AI-generated structured output.
+Both user input and AI-generated output are validated with Zod.
 
-This reduces the risk of invalid data reaching the interface.
+```text
+User → Validation → AI → Validation → UI
+```
 
-Explicit Failure States
+### Explicit Failure States
 
 AI applications can fail because of:
 
-Invalid input
-Missing configuration
-API failures
-Rate limits
-Temporary service errors
-Invalid AI responses
+- Invalid input
+- Missing configuration
+- API failures
+- Rate limits
+- Temporary service failures
+- Invalid AI output
 
-DevBrief AI treats failure as an explicit UI state rather than allowing the application to silently fail or crash.
+DevBrief treats these as explicit UI states.
 
-Final Verification
+---
 
-Before deployment, the project was checked using:
+# 🏁 Final Verification
 
+The project was verified using:
+
+```bash
 npm run lint
 npm run test:run
 npm run build
+```
 
-Current automated test result:
+Current test status:
 
-Test Files  5 passed
-Tests       19 passed
-Capstone Summary
+```text
+✓ 5 Test Files Passed
+✓ 19 Tests Passed
+✓ ESLint Passed
+✓ Production Build Passed
+```
+
+---
+
+# 📌 Capstone Summary
 
 DevBrief AI demonstrates a complete AI-powered frontend workflow:
 
+```text
 User Decision
       ↓
 React Interface
@@ -618,9 +438,10 @@ Streaming Lifecycle Events
 Generative UI Components
       ↓
 Structured Decision Audit
+```
 
-The project focuses on a central principle:
+The project demonstrates how an AI-powered application can move beyond chat-style responses and convert AI output into a structured, interactive user experience.
 
-AI output should be treated as structured application data, not automatically displayed as a wall of generated text.
+---
 
-By combining structured AI responses, validation, lifecycle-aware UI states, dedicated components, error recovery, automated testing, and deployment, DevBrief AI functions as a complete AI-powered decision analysis application and serves as the final capstone project for my Frontend Development Internship at FlyRank AI.
+**Built as the main capstone project for the Frontend Development Internship at FlyRank AI.**
